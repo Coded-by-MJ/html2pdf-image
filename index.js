@@ -41,7 +41,7 @@ app.post("/convert", async (req, res) => {
     executablePath:
       process.env.NODE_ENV === "production"
         ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath,
+        : puppeteer.executablePath(),
 
     headless: true,
   });
