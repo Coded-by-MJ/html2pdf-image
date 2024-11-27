@@ -34,10 +34,13 @@ app.post("/convert", async (req, res) => {
       "--disable-dev-shm-usage",
       "--disable-accelerated-2d-canvas",
       "--disable-gpu",
-      "--no-sandbox",
       "--single-process",
       "--no-zygote",
     ],
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? "/usr/bin/chromium-browser" // Adjust based on environment
+        : puppeteer.executablePath(), // Default for local development
     headless: true,
   });
 
