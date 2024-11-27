@@ -12,10 +12,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 require("dotenv").config();
 
-const corsOptions = {
-  origin: "https://floridagetawaysrentals.com",
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
