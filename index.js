@@ -39,7 +39,7 @@ app.post("/generate-pdf", async (req, res) => {
       },
     });
     res.setHeader("Content-Type", "application/pdf");
-    res.json({ pdfBuffer });
+    res.json({ pdfFile: pdfBuffer.toString("base64") });
   } catch (error) {
     console.error("Error generating PDF:", error);
     res.status(500).json({ message: "Error generating PDF", error });
