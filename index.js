@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const puppeteer = require("puppeteer");
 const html_to_pdf = require("html-pdf-node");
 
 const app = express();
@@ -67,36 +66,3 @@ function generatePdfAsync(file, options) {
 }
 
 startApp();
-//  let browser = null;
-
-//  if (process.env.NODE_ENV === "development") {
-//    browser = await puppeteerCore.launch({
-//      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-//      headless: true,
-//    });
-//  }
-//  if (process.env.NODE_ENV === "production") {
-//    const executablePath = await chromium.executablePath; // Await the promise here
-
-//    browser = await puppeteerCore.launch({
-//      args: chromium.args,
-//      defaultViewport: chromium.defaultViewport,
-//      executablePath,
-//      headless: chromium.headless,
-//    });
-//  }
-
-//  if (!browser) {
-//    throw new Error("Failed to launch the browser.");
-//  }
-//  const page = await browser.newPage();
-//  await page.setContent(pdfHtmlContent, { waitUntil: "networkidle0" });
-//  const pdfBuffer = await page.pdf({
-//    format: "a4",
-//    margin: {
-//      top: "0.5in",
-//      bottom: "0.5in",
-//    },
-//  });
-//  await browser.close();
-//  return pdfBuffer;
