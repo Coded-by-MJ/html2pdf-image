@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const html_to_pdf = require("html-pdf-node");
-const pdfPoppler = require("pdf-poppler");
+// const pdfPoppler = require("pdf-poppler");
 const fs = require("fs");
 const path = require("path");
 const app = express();
@@ -76,32 +76,32 @@ const startApp = () => {
   }
 };
 
-async function convertPdfToImage(pdfPath, outputImagePath) {
-  const options = {
-    format: "png",
-    out_dir: path.dirname(outputImagePath),
-    out_prefix: path.basename(outputImagePath, path.extname(outputImagePath)),
-    page: 1, // Convert only the first page
-  };
-  return new Promise((resolve, reject) => {
-    pdfPoppler
-      .convert(pdfPath, options)
-      .then(() => {
-        resolve(
-          path.join(
-            path.dirname(outputImagePath),
-            `${path.basename(
-              outputImagePath,
-              path.extname(outputImagePath)
-            )}-1.png`
-          )
-        );
-      })
-      .catch((err) => {
-        reject(err); // Reject if an error occurs during conversion
-      });
-  });
-}
+// async function convertPdfToImage(pdfPath, outputImagePath) {
+//   const options = {
+//     format: "png",
+//     out_dir: path.dirname(outputImagePath),
+//     out_prefix: path.basename(outputImagePath, path.extname(outputImagePath)),
+//     page: 1, // Convert only the first page
+//   };
+//   return new Promise((resolve, reject) => {
+//     pdfPoppler
+//       .convert(pdfPath, options)
+//       .then(() => {
+//         resolve(
+//           path.join(
+//             path.dirname(outputImagePath),
+//             `${path.basename(
+//               outputImagePath,
+//               path.extname(outputImagePath)
+//             )}-1.png`
+//           )
+//         );
+//       })
+//       .catch((err) => {
+//         reject(err); // Reject if an error occurs during conversion
+//       });
+//   });
+// }
 
 function generatePdfAsync(file, options) {
   return new Promise((resolve, reject) => {
