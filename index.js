@@ -37,25 +37,25 @@ app.post("/generate-pdf-image", async (req, res) => {
       },
     });
 
-    // TEMP FILE PATHS
-    const pdfPath = path.join(__dirname, "temp.pdf");
-    const outputImagePath = path.join(__dirname, "output.png");
+    // // TEMP FILE PATHS
+    // const pdfPath = path.join(__dirname, "temp.pdf");
+    // const outputImagePath = path.join(__dirname, "output.png");
 
-    // Write PDF buffer to a temporary file (needed for pdf-poppler)
-    fs.writeFileSync(pdfPath, pdfBuffer);
+    // // Write PDF buffer to a temporary file (needed for pdf-poppler)
+    // fs.writeFileSync(pdfPath, pdfBuffer);
 
-    await convertPdfToImage(pdfPath, outputImagePath);
+    // await convertPdfToImage(pdfPath, outputImagePath);
 
-    const imagePath = path.join(__dirname, "output-1.png"); // Correct image path
-    const imageBase64 = fs.readFileSync(imagePath, { encoding: "base64" });
+    // const imagePath = path.join(__dirname, "output-1.png"); // Correct image path
+    // const imageBase64 = fs.readFileSync(imagePath, { encoding: "base64" });
 
     // Cleanup temp files
-    fs.unlinkSync(pdfPath);
-    fs.unlinkSync(imagePath);
+    // fs.unlinkSync(pdfPath);
+    // fs.unlinkSync(imagePath);
 
     res.json({
       pdf: pdfBuffer.toString("base64"),
-      image: imageBase64,
+      image: "",
     });
   } catch (err) {
     console.error("Error generating PDF & Image:", err);
