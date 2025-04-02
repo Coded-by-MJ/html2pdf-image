@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const html_to_pdf = require("html-pdf-node");
-
+const pdfPoppler = require("pdf-poppler");
+const fs = require("fs");
+const path = require("path");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -18,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("<h1>Hello From Server...</h1>");
 });
 
-app.post("/generate-pdf", async (req, res) => {
+app.post("/generate-pdf-image", async (req, res) => {
   const { pdfHtmlContent } = req.body;
 
   if (!pdfHtmlContent) {
@@ -34,11 +36,32 @@ app.post("/generate-pdf", async (req, res) => {
         bottom: "0.5in",
       },
     });
-    res.setHeader("Content-Type", "application/pdf");
-    res.send(pdfBuffer);
-  } catch (error) {
-    console.error("Error generating PDF:", error);
-    res.status(500).json({ message: "Error generating PDF", error });
+
+    // TEMP FILE PATHS
+    const pdfPath = path.join(__dirname, "temp.pdf");
+    const outputImagePath = path.join(__dirname, "output.png");
+
+    // Write PDF buffer to a temporary file (needed for pdf-poppler)
+    fs.writeFileSync(pdfPath, pdfBuffer);
+
+    await convertPdfToImage(pdfPath, outputImagePath);
+
+    const imagePath = path.join(__dirname, "output-1.png"); // Correct image path
+    const imageBase64 = fs.readFileSync(imagePath, { encoding: "base64" });
+
+    // Cleanup temp files
+    fs.unlinkSync(pdfPath);
+    fs.unlinkSync(imagePath);
+
+    res.json({
+      pdf: pdfBuffer.toString("base64"),
+      image: imageBase64,
+    });
+  } catch (err) {
+    console.error("Error generating PDF & Image:", err);
+    res
+      .status(500)
+      .json({ message: "Error generating PDF & Image", error: err.message });
   }
 });
 
@@ -52,6 +75,33 @@ const startApp = () => {
     process.exit(1);
   }
 };
+
+async function convertPdfToImage(pdfPath, outputImagePath) {
+  const options = {
+    format: "png",
+    out_dir: path.dirname(outputImagePath),
+    out_prefix: path.basename(outputImagePath, path.extname(outputImagePath)),
+    page: 1, // Convert only the first page
+  };
+  return new Promise((resolve, reject) => {
+    pdfPoppler
+      .convert(pdfPath, options)
+      .then(() => {
+        resolve(
+          path.join(
+            path.dirname(outputImagePath),
+            `${path.basename(
+              outputImagePath,
+              path.extname(outputImagePath)
+            )}-1.png`
+          )
+        );
+      })
+      .catch((err) => {
+        reject(err); // Reject if an error occurs during conversion
+      });
+  });
+}
 
 function generatePdfAsync(file, options) {
   return new Promise((resolve, reject) => {
