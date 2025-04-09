@@ -1,16 +1,15 @@
-# HTML2PDF-Image API
+# HTML2PDF API
 
 ## Overview
 
-The HTML2PDF-Image API allows you to generate both a PDF and an image (PNG format) from an HTML content input. This service can be utilized for converting any HTML to a PDF file and generating an image of the first page of the PDF. The conversion is powered by a combination of HTML to PDF generation and PDF to image conversion techniques.
+The HTML2PDF API allows you to generate both a PDF from an HTML content input. This service can be utilized for converting any HTML to a PDF file. The conversion is powered by a combination of HTML to PDF generation conversion techniques.
 
-### Live API Link: [https://html2pdf-q60u.onrender.com/generate-pdf-image](https://html2pdf-q60u.onrender.com/generate-pdf-image)
+### Live API Link: [https://html2pdf-q60u.onrender.com/generate-pdf](https://html2pdf-q60u.onrender.com/generate-pdf)
 
 ## Features
 
 - **Generate PDF**: Converts HTML content to a PDF document.
-- **Generate Image**: Converts the first page of the generated PDF to an image in PNG format.
-- **Base64 Response**: Both the PDF and the image are returned as base64-encoded strings.
+- **Base64 Response**: The PDF is returned as base64-encoded string.
 
 ## Installation
 
@@ -20,13 +19,13 @@ If you want to use the API in your Node.js projects or any HTTP client, you can 
 
 ## API Endpoint
 
-### `POST /generate-pdf-image`
+### `POST /generate-pdf`
 
-- **Request URL**: `https://html2pdf-q60u.onrender.com/generate-pdf-image`
+- **Request URL**: `https://html2pdf-q60u.onrender.com/generate-pdf`
 - **Method**: POST
 - **Content-Type**: `application/json`
 - **Request Body**:
-  - `pdfHtmlContent`: The HTML content you want to convert to a PDF and an image.
+  - `pdfHtmlContent`: The HTML content you want to convert to a PDF.
 
 #### Request Example
 
@@ -41,14 +40,12 @@ If you want to use the API in your Node.js projects or any HTTP client, you can 
 The API will return a JSON object with two fields:
 
 - **pdf**: The base64-encoded string of the generated PDF.
-- **image**: The base64-encoded string of the generated image (first page of the PDF).
 
 #### Response Example
 
 ```json
 {
-  "pdf": "base64-encoded-pdf-data",
-  "image": "base64-encoded-image-data"
+  "pdf": "base64-encoded-pdf-data"
 }
 ```
 
@@ -57,7 +54,7 @@ The API will return a JSON object with two fields:
 You can use `Postman`, `curl`, or any HTTP client to interact with the API. Here's an example using `curl`:
 
 ```bash
-curl -X POST https://html2pdf-q60u.onrender.com/generate-pdf-image   -H "Content-Type: application/json"   -d '{
+curl -X POST https://html2pdf-q60u.onrender.com/generate-pdf   -H "Content-Type: application/json"   -d '{
     "pdfHtmlContent": "<h1>Sample HTML content</h1><p>Converted to PDF and image.</p>"
   }'
 ```
@@ -69,10 +66,10 @@ Here's how you can interact with the API using `axios` in a Node.js environment:
 ```javascript
 const axios = require("axios");
 
-const generatePdfAndImage = async () => {
+const generatePdf = async () => {
   try {
     const response = await axios.post(
-      "https://html2pdf-q60u.onrender.com/generate-pdf-image",
+      "https://html2pdf-q60u.onrender.com/generate-pdf",
       {
         pdfHtmlContent:
           "<h1>Sample HTML content</h1><p>Converted to PDF and image.</p>",
@@ -80,13 +77,12 @@ const generatePdfAndImage = async () => {
     );
 
     console.log("PDF Base64:", response.data.pdf);
-    console.log("Image Base64:", response.data.image);
   } catch (error) {
-    console.error("Error generating PDF and Image:", error);
+    console.error("Error generating PDF:", error);
   }
 };
 
-generatePdfAndImage();
+generatePdf();
 ```
 
 ## Error Handling
@@ -94,17 +90,17 @@ generatePdfAndImage();
 The API will respond with appropriate error messages in case of issues, such as:
 
 - **400 Bad Request**: If no HTML content is provided.
-- **500 Internal Server Error**: If there is an error in generating the PDF or image.
+- **500 Internal Server Error**: If there is an error in generating the PDF.
 
 Example error response:
 
 ```json
 {
-  "message": "Error generating PDF & Image",
+  "message": "Error generating PDF",
   "error": "Some error details"
 }
 ```
 
 ## License
 
-This API is a custom service for HTML to PDF and Image conversion. It is free to use for both personal and commercial use.
+This API is a custom service for HTML to PDF. It is free to use for both personal and commercial use.
